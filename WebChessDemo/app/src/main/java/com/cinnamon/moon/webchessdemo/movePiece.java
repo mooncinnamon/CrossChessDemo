@@ -13,13 +13,13 @@ import java.net.Socket;
  * Created by moonp on 2018-03-13.
  */
 
-public class movePiece extends AsyncTask<String, String, String> {
+public class MovePiece extends AsyncTask<String, String, String> {
 
     String ip = "192.168.255.6";
     int port = 15555;
     TextView text;
 
-    movePiece(TextView text) {
+    MovePiece(TextView text) {
         this.text = text;
     }
 
