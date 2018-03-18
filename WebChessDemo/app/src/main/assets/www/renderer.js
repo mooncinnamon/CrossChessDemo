@@ -51,4 +51,9 @@ var cfg = {
   onDrop: onDrop,
   onSnapEnd: onSnapEnd
 };
+
 board = ChessBoard('board', cfg);
+
+function foo(d){
+    console.log(d);
+}

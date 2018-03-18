@@ -4,11 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cinnamon.moon.webchessdemo.MainActivity_kt">
+    tools:context="com.cinnamon.moon.webchessdemo.MainActivity">
 
     <WebView
         android:id="@+id/chessboard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="400dp"
+        app:layout_constraintBottom_toTopOf="@+id/sendData" />
+
+    <Button
+        android:id="@+id/sendData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/chessboard" />
+
 
 </android.support.constraint.ConstraintLayout>
