@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private final Handler handler = new Handler();
     private MovePiece movePiece;
     private WebView chessboard;
+    private Button mBfinishGame;
 
     @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled"})
     public void onCreate(Bundle savedInstanceState){
@@ -29,13 +30,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         chessboard = findViewById(R.id.chessboard);
-        Button button = findViewById(R.id.sendData);
-
-
+        mBfinishGame = findViewById(R.id.finishGame);
 
         WebView.setWebContentsDebuggingEnabled(true);
 
 
+
+        mBfinishGame.setOnClickListener(finishGame);
 
         WebSettings settings = chessboard.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -44,14 +45,15 @@ public class MainActivity extends AppCompatActivity {
         chessboard.addJavascriptInterface(new GetPiece(), "Position");
 
         chessboard.loadUrl("file:///android_asset/www/index.html");
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               sendPiece();
-            }
-        });
     }
+
+    private View.OnClickListener finishGame = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            movePiece = new MovePiece(chessboard);
+            movePiece.execute("#finishGame");
+        }
+    };
 
     private class GetPiece{
         @JavascriptInterface
@@ -59,14 +61,10 @@ public class MainActivity extends AppCompatActivity {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-
-                    Log.d("Move", position);
+                    movePiece = new MovePiece(chessboard);
+                    movePiece.execute(position);
                 }
             });
         }
-    }
-
-    private void sendPiece(String position){
-        chessboard.loadUrl("javascript:foo('"+position+"');");
     }
 }

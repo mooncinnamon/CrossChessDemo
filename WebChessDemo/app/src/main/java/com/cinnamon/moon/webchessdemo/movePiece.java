@@ -2,6 +2,7 @@ package com.cinnamon.moon.webchessdemo;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -15,12 +16,12 @@ import java.net.Socket;
 
 public class MovePiece extends AsyncTask<String, String, String> {
 
-    String ip = "192.168.255.6";
-    int port = 15555;
-    TextView text;
+    private String ip = "192.168.1.100";
+    private int port = 15555;
+    private WebView chessboard;
 
-    MovePiece(TextView text) {
-        this.text = text;
+    MovePiece(WebView chessboard) {
+        this.chessboard = chessboard;
     }
 
     @Override
@@ -30,29 +31,40 @@ public class MovePiece extends AsyncTask<String, String, String> {
     }
 
     @Override
-    protected String doInBackground(String... strings) {
-        String msg = null;
+    protected String doInBackground(String... movePoints) {
+
+        String sendPoint = null;
+        String returnPoint = null;
+
+        if (movePoints != null){
+            sendPoint = movePoints[0];
+        }
+
+
         try {
             Socket socket = new Socket(ip, port);
-            Log.d("attach", "server");
+            Log.d("chessPiece attach", "server");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
 
-            writer.println("send data");
+            writer.println(sendPoint);
             writer.flush();
 
-            msg = reader.readLine();
+            returnPoint = reader.readLine();
+
+            Log.d("chessPiece getMessage", returnPoint);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
-        return msg;
+        return returnPoint;
     }
 
     @Override
-    protected void onPostExecute(String string){
-        super.onPostExecute(string);
-        text.setText(string);
+    protected void onPostExecute(String position){
+        super.onPostExecute(position);
+        Log.d("chessPiece",position);
+        chessboard.loadUrl("javascript:movePiece('"+position+"');");
     }
 }

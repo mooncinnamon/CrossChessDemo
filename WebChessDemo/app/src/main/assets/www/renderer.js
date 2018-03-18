@@ -35,7 +35,7 @@ var onDrop = function(source, target) {
   window.Position.getPosition(target);
 
   // make random legal move for black
-  window.setTimeout(makeRandomMove, 250);
+  //window.setTimeout(makeRandomMove, 250);
 };
 
 // update the board position after the piece snap
@@ -54,6 +54,7 @@ var cfg = {
 
 board = ChessBoard('board', cfg);
 
-function foo(d){
-    console.log(d);
+function movePiece(position){
+    game.move(position);
+    board.position(game.fen());
 }
